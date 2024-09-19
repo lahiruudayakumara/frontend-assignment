@@ -7,7 +7,6 @@ import StepItemWithClose from "./content-steps-with-close";
 import AddFieldButton from "../buttons/add-field";
 import AddFieldModal from "./add-field-modal";
 import WelcomeScreenSetting from "../settings/welcome-screen-setting";
-import { WelcomeProvider } from "@/context/welcome-screen-context";
 
 interface ISteps {
   step: string;

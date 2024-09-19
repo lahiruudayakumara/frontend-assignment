@@ -51,6 +51,8 @@ const UploadImageModal: React.FC<AddFieldModalProps> = ({
     onClose();
   };
 
+  console.log(selectedImage);
+
   if (!isOpen) return null;
 
   return (

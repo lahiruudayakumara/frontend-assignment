@@ -1,7 +1,7 @@
 "use client";
 
 import { X, CheckCircle, Mail, ChevronDown, Phone, Section, MapPin } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
 interface AddFieldModalProps {
   isOpen: boolean;
@@ -12,9 +12,7 @@ interface AddFieldModalProps {
 const AddFieldModal: React.FC<AddFieldModalProps> = ({
   isOpen,
   onClose,
-  onAddField,
 }) => {
-  const [newField, setNewField] = useState("");
   const list = [
     { name: "Multiple Choice", icon: <CheckCircle size={16} /> },
     { name: "Short Text", icon: <Section size={16} /> },
@@ -26,13 +24,6 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({
     { name: "Legal", icon: <Section size={16} /> },
     { name: "Country", icon: <MapPin size={16} /> }
   ];
-
-  const handleAdd = () => {
-    if (newField.trim()) {
-      onAddField(newField);
-      setNewField(""); // Clear input field
-    }
-  };
 
   if (!isOpen) return null;
 

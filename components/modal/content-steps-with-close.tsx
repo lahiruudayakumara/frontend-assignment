@@ -1,5 +1,5 @@
 import React from "react";
-import { CircleDot, GripVertical, X } from "lucide-react"; // Assuming you're using lucide-react for icons
+import { GripVertical, X } from "lucide-react";
 
 interface StepItemProps {
   item: {
