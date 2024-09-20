@@ -5,6 +5,7 @@ import Header from "@/components/header/dashboard-header";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function Dashboard() {
 
@@ -13,12 +14,21 @@ export default function Dashboard() {
       <Header />
       <div className="p-6">
         <div className="pb-4">
-          <SaveButton label="Create"  onClick={() => {}}  />
+          <SaveButton label="Create" onClick={() => {}} />
         </div>
         <div className="flex gap-8">
           <Link href="/dashboard/Demo Project/home-screen">
-            <div className="bg-slate-100 shadow-md p-4 flex flex-col gap-4">
-              <Image src="/image.png" alt="logo" width={250} height={250} />
+            <motion.div
+              className="bg-slate-100 shadow-md p-4 flex flex-col gap-4"
+              variants={{
+                initial: { opacity: 0, y: 20 },
+                animate: { opacity: 1, y: 0 },
+              }}
+              initial="initial"
+              animate="animate"
+              transition={{ duration: 0.6 }}
+            >
+              <Image src="/image.png" alt="logo" width={300} height={300} />
               <div className="flex justify-between items-center">
                 <div>
                   <h1 className="font-bold">Demo Project</h1>
@@ -29,7 +39,7 @@ export default function Dashboard() {
                   <Trash2 color="red" />
                 </button>
               </div>
-            </div>
+            </motion.div>
           </Link>
         </div>
       </div>

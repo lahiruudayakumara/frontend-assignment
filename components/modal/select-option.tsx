@@ -32,7 +32,7 @@ const SelectOption = () => {
             onClick={() => handleClick(index)}
             className={`text-center gap-2 p-2 rounded-md ${
               item.active ? "bg-white" : ""
-            } hover:bg-slate-50 cursor-pointer w-full`}
+            } hover:bg-slate-50 cursor-pointer w-full transition duration-300 ease-in-out `}
           >
             <h1 className={`text-sm font-semibold`}>{item.name}</h1>
           </div>

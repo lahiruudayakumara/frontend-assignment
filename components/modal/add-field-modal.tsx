@@ -20,7 +20,7 @@ interface AddFieldModalProps {
   onAddField: (newField: string) => void;
 }
 
-const AddFieldModal: React.FC<AddFieldModalProps> = ({ isOpen, onClose }) => {
+const AddFieldModal: React.FC<AddFieldModalProps> = ({ isOpen, onClose, onAddField }) => {
   const list = [
     { name: "Multiple Choice", icon: <Check size={16} /> },
     { name: "Short Text", icon: <Pencil size={16} /> },
@@ -53,6 +53,7 @@ const AddFieldModal: React.FC<AddFieldModalProps> = ({ isOpen, onClose }) => {
         <div className="grid grid-cols-4 gap-4 py-4">
           {list.map((item, index) => (
             <div
+              onClick={() => onAddField(item.name)}
               key={index}
               className="p-2 border hover:bg-slate-100 rounded flex items-center space-x-2  cursor-pointer"
             >

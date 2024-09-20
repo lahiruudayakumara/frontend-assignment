@@ -40,6 +40,7 @@ const ContentSteps = () => {
     {
       step: "End screen",
       active: false,
+      list: [],
     },
   ]);
   const [fields, setFields] = useState<string[]>([]);
@@ -48,10 +49,22 @@ const ContentSteps = () => {
     useState<boolean>(false);
   const [emailSetting, setEmailSetting] = useState<boolean>(false);
   const [nameSetting, setNameSetting] = useState<boolean>(false);
+  const [fieldIndex, setFieldIndex] = useState<number>(0);
 
   const handleAddField = (newField: string) => {
     setFields([...fields, newField]);
     setModalOpen(false);
+    setSteps(
+      steps.map((step, idx) => {
+        if (idx === fieldIndex) {
+          return {
+            ...step,
+            list: [...step.list!, { title: newField, active: true }],
+          };
+        }
+        return step;
+      })
+    );
   };
 
   const handleCloseModal = () => {
@@ -59,6 +72,13 @@ const ContentSteps = () => {
   };
 
   const handleStep = (index: number) => {
+    let value = false;
+    steps.map((item, idx) => {
+      if (idx === index) {
+        value = item.active;
+      }
+    });
+
     setSteps(
       steps.map((item, idx) => {
         if (idx === index) {
@@ -68,8 +88,17 @@ const ContentSteps = () => {
       })
     );
     if (index === 0) {
-      setWelcomeScreenSetting(true);
-      router.push("/dashboard/Demo Project/home-screen");
+      if (value) {
+        setWelcomeScreenSetting(true);
+        router.push("/dashboard/Demo Project/home-screen");
+      } else {
+        router.push("/dashboard/Demo Project/home-screen");
+      }
+    }
+    if (index === 1) {
+      if (value) {
+        router.push("/dashboard/Demo Project/end-screen");
+      }
     }
   };
 
@@ -101,6 +130,11 @@ const ContentSteps = () => {
         return step;
       })
     );
+  };
+
+  const handleAdd = (index: number) => {
+    setModalOpen(true);
+    setFieldIndex(index);
   };
 
   return (
@@ -150,19 +184,24 @@ const ContentSteps = () => {
                 index={index}
               />
               <div className="flex flex-col gap-2 mt-2">
-                  {item.list
-                    ?.filter((subItem) => subItem.active)
-                    .map((it, idx) => (
-                      <StepItemWithClose
-                        onClick={() => handleSubStep({ step: it.title })}
-                        onClose={() => disableSubSetups({ step: it.title })}
-                        key={idx}
-                        item={{ step: it.title }}
-                        index={idx}
-                      />
-                    ))}
-                </div>
-              <AddFieldButton onClick={() => setModalOpen(true)} />
+                {item.list
+                  ?.filter((subItem) => subItem.active)
+                  .map((it, idx) => (
+                    <StepItemWithClose
+                      onClick={() => handleSubStep({ step: it.title })}
+                      onClose={() => disableSubSetups({ step: it.title })}
+                      key={idx}
+                      item={{ step: it.title }}
+                      index={idx}
+                    />
+                  ))}
+              </div>
+              {item.active && (
+                <AddFieldButton onClick={() => handleAdd(index)} />
+              )}
+              {index !== steps.length - 1 && (
+                <div className="border-b border-slate-200 my-2"></div>
+              )}
             </div>
           ))}
         </div>
