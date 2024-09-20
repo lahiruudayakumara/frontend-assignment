@@ -3,17 +3,30 @@ import * as Icons from "lucide-react";
 
 interface Props {
   label: string;
-  icon: keyof typeof Icons;
+  icon?: keyof typeof Icons;
   align?: "left" | "center" | "right";
   onClick: () => void;
 }
 
-const IconWithButton: React.FC<Props> = ({
+const DiscardButton: React.FC<Props> = ({
   label,
   icon,
   onClick,
   align = "left",
 }) => {
+  if (!icon) {
+    return (
+      <button
+        onClick={onClick}
+        className={`flex w-full text-center items-center justify-center gap-2 p-2 px-2 bg-white text-red-600  cursor-pointer my-4 hover:border hover:bg-slate-50 rounded-md ${
+          align === "center" ? "mx-auto" : align === "right" ? "ml-auto" : ""
+        }`}
+      >
+        <h1 className="text-sm font-semibold">{label}</h1>
+      </button>
+    );
+  }
+
   const IconComponent = Icons[icon] as React.ElementType;
 
   return (
@@ -29,4 +42,4 @@ const IconWithButton: React.FC<Props> = ({
   );
 };
 
-export default IconWithButton;
+export default DiscardButton;

@@ -14,7 +14,7 @@ interface AddFieldModalProps {
 const UploadImageModal: React.FC<AddFieldModalProps> = ({
   isOpen,
   onClose,
-  onAddField
+  onAddField,
 }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -103,17 +103,16 @@ const UploadImageModal: React.FC<AddFieldModalProps> = ({
           id="file-upload"
           onChange={handleImageChange}
         />
-        <label htmlFor="file-upload" className="flex items-center justify-center gap-2">
+        <label
+          htmlFor="file-upload"
+          className="flex items-center justify-center gap-2"
+        >
           <IconWithButton
             icon="FolderUp"
             label="Browse"
             onClick={() => document.getElementById("file-upload")?.click()}
           />
-          <IconWithButton
-            icon="Upload"
-            label="Upload"
-            onClick={handleUpload}
-          />
+          <IconWithButton icon="Upload" label="Upload" onClick={handleUpload} />
         </label>
       </div>
     </div>

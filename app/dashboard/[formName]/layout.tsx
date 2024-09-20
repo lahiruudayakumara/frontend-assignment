@@ -1,9 +1,14 @@
+"use client";
+
+import React from "react";
 import ContentSteps from "@/components/modal/content-steps";
 import SelectOption from "@/components/modal/select-option";
 import { Box, ChevronRight, Settings } from "lucide-react";
-import React from "react";
+import { useParams } from "next/navigation";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { formName } = useParams();
+
   return (
     <>
       <div className="flex flex-row h-screen p-4 gap-4">
@@ -13,7 +18,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
               <Box />
               <h1 className="text-lg font-bold mx-2">Dashboard</h1>
               <ChevronRight />
-              <h1 className="text-lg font-bold mx-2">Demo Form</h1>
+              <h1 className="text-lg font-bold mx-2">{decodeURIComponent(formName.toString())}</h1>
             </div>
             <button>
               <Settings />
@@ -30,4 +35,4 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default layout;
+export default Layout;

@@ -6,7 +6,10 @@ import StepItem from "./step-item";
 import StepItemWithClose from "./content-steps-with-close";
 import AddFieldButton from "../buttons/add-field";
 import AddFieldModal from "./add-field-modal";
-import WelcomeScreenSetting from "../settings/welcome-screen-setting";
+import WelcomeScreenSetting from "../settings/welcome-screen/welcome-screen-setting";
+import EmailSetting from "../settings/welcome-screen/email-setting";
+import NameSetting from "../settings/welcome-screen/name-setting";
+import { useRouter } from "next/navigation";
 
 interface ISteps {
   step: string;
@@ -18,6 +21,7 @@ interface ISteps {
 }
 
 const ContentSteps = () => {
+  const router = useRouter();
   const [steps, setSteps] = useState<ISteps[]>([
     {
       step: "Welcome screen",
@@ -29,7 +33,7 @@ const ContentSteps = () => {
         },
         {
           title: "Enter your email",
-          active: false,
+          active: true,
         },
       ],
     },
@@ -40,15 +44,14 @@ const ContentSteps = () => {
   ]);
   const [fields, setFields] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [welcomeScreenSetting, setWelcomeScreenSetting] = useState<boolean>(false);
+  const [welcomeScreenSetting, setWelcomeScreenSetting] =
+    useState<boolean>(false);
+  const [emailSetting, setEmailSetting] = useState<boolean>(false);
+  const [nameSetting, setNameSetting] = useState<boolean>(false);
 
   const handleAddField = (newField: string) => {
     setFields([...fields, newField]);
     setModalOpen(false);
-  };
-
-  const handleOpenModal = () => {
-    setModalOpen(true);
   };
 
   const handleCloseModal = () => {
@@ -66,18 +69,67 @@ const ContentSteps = () => {
     );
     if (index === 0) {
       setWelcomeScreenSetting(true);
+      router.push("/dashboard/Demo Project/home-screen");
     }
-  }
+  };
+
+  const handleSubStep = (item: { step: string }) => {
+    if (item.step === "Enter your email") {
+      setEmailSetting(true);
+      router.push("/dashboard/Demo Project/email");
+    }
+    if (item.step === "Enter your name") {
+      setNameSetting(true);
+      router.push("/dashboard/Demo Project/name");
+    }
+  };
+
+  const disableSubSetups = (item: { step: string }) => {
+    setSteps(
+      steps.map((step) => {
+        if (step.step === "Welcome screen") {
+          return {
+            ...step,
+            list: step.list?.map((subStep) => {
+              if (subStep.title === item.step) {
+                return { ...subStep, active: false };
+              }
+              return subStep;
+            }),
+          };
+        }
+        return step;
+      })
+    );
+  };
 
   return (
-
     <div>
       <AddFieldModal
         isOpen={modalOpen}
         onClose={handleCloseModal}
         onAddField={handleAddField}
       />
-      <WelcomeScreenSetting isOpen={welcomeScreenSetting} onClose={() => setWelcomeScreenSetting(false)} />
+      <WelcomeScreenSetting
+        isOpen={welcomeScreenSetting}
+        onClose={() => {
+          setWelcomeScreenSetting(false);
+        }}
+      />
+      <EmailSetting
+        isOpen={emailSetting}
+        onClose={() => {
+          setEmailSetting(false);
+          router.push("/dashboard/Demo Project/home-screen");
+        }}
+      />
+      <NameSetting
+        isOpen={nameSetting}
+        onClose={() => {
+          setNameSetting(false);
+          router.push("/dashboard/Demo Project/home-screen");
+        }}
+      />
       <div>
         <div className="flex items-center">
           <Menu />
@@ -91,18 +143,26 @@ const ContentSteps = () => {
         <div className="flex flex-col gap-2 w-full mt-4">
           {steps.map((item, index) => (
             <div key={index}>
-              <StepItem select={handleStep} active={item.active}  item={item} index={index} />
+              <StepItem
+                select={handleStep}
+                active={item.active}
+                item={item}
+                index={index}
+              />
               <div className="flex flex-col gap-2 mt-2">
-                {item.list &&
-                  item.list.map((it, idx) => (
-                    <StepItemWithClose
-                      key={idx}
-                      item={{ step: it.title }}
-                      index={idx}
-                    />
-                  ))}
-              </div>
-              <AddFieldButton onClick={handleOpenModal} />
+                  {item.list
+                    ?.filter((subItem) => subItem.active)
+                    .map((it, idx) => (
+                      <StepItemWithClose
+                        onClick={() => handleSubStep({ step: it.title })}
+                        onClose={() => disableSubSetups({ step: it.title })}
+                        key={idx}
+                        item={{ step: it.title }}
+                        index={idx}
+                      />
+                    ))}
+                </div>
+              <AddFieldButton onClick={() => setModalOpen(true)} />
             </div>
           ))}
         </div>
